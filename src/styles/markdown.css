@@ -80,15 +80,13 @@
 .prose code {
   font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
 }
-.astro-code,
 .astro-code span {
   color: var(--shiki-light);
-  background-color: var(--shiki-light-bg);
+  background-color: transparent;
 }
-.dark .astro-code,
 .dark .astro-code span {
   color: var(--shiki-dark);
-  background-color: var(--shiki-dark-bg);
+  background-color: transparent;
 }
 .astro-code .line.highlighted {
   display: inline-block;
