@@ -1,5 +1,5 @@
 ---
-import { ClientRouter, fade } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import { messages, localPath, switchPath } from '../utils/i18n';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -13,6 +13,7 @@ interface Props {
   lang?: 'zh' | 'en';
   article?: { date: Date; updated?: Date };
   noindex?: boolean;
+  wide?: boolean;
 }
 const {
   title,
@@ -21,8 +22,23 @@ const {
   lang = 'en',
   article,
   noindex = false,
+  wide = false,
 } = Astro.props;
 const t = messages[lang];
+const crossfade = {
+  old: {
+    name: 'astroFadeOut',
+    duration: '220ms',
+    easing: 'ease',
+    fillMode: 'both' as const,
+  },
+  new: {
+    name: 'astroFadeIn',
+    duration: '220ms',
+    easing: 'ease',
+    fillMode: 'both' as const,
+  },
+};
 const description = providedDescription ?? t.description;
 const staticPage = ['/', '/posts/', '/projects/'].includes(
   Astro.url.pathname.replace(/^\/(?:en|zh)(?=\/)/, ''),
@@ -119,15 +135,16 @@ const jsonLd = article
     )}
   </head>
   <body>
+    <div class="navigation-progress" aria-hidden="true"></div>
     <a class="skip-link" href="#main">
       {t.skip}
     </a>
     <Header lang={lang} alternate={alternate} />
     <main
       id="main"
-      class="page-shell page-content"
+      class:list={['page-shell page-content', { 'page-content-wide': wide }]}
       transition:name="page-content"
-      transition:animate={fade({ duration: '180ms' })}
+      transition:animate={{ forwards: crossfade, backwards: crossfade }}
     >
       <slot />
     </main>

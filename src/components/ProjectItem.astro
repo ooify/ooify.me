@@ -6,15 +6,13 @@ interface Props {
   lang: Locale;
 }
 const { project, lang } = Astro.props;
-const destination = project.url ?? project.github;
-const internal = destination?.startsWith('/');
-const href =
-  destination && internal ? localPath(destination, lang) : destination;
-const Tag = href ? 'a' : 'div';
+const destination = project.url;
+const internal = destination.startsWith('/') && !destination.startsWith('//');
+const href = internal ? localPath(destination, lang) : destination;
 ---
 
 <li>
-  <Tag
+  <a
     class="project-entry"
     href={href}
     target={href && !internal ? '_blank' : undefined}
@@ -32,5 +30,5 @@ const Tag = href ? 'a' : 'div';
           : project.description}
       </span>
     </span>
-  </Tag>
+  </a>
 </li>

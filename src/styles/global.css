@@ -313,31 +313,68 @@ h3 {
 .post-meta a:hover {
   color: var(--accent);
 }
+.page-shell.page-content-wide {
+  max-width: 1080px;
+}
+.project-categories {
+  display: grid;
+  gap: 40px;
+}
+.project-category > h2 {
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--heading);
+}
+.project-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px 24px;
+}
 .project-list li {
-  margin: 0 0 36px;
+  min-width: 0;
+  margin: 0;
+}
+@media (min-width: 641px) {
+  .project-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .project-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 .project-entry {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 20px;
-  padding: 12px 0;
+  padding: 12px;
+  height: 100%;
+  border-radius: 8px;
+  overflow-wrap: anywhere;
+  transition: background-color 320ms ease-in-out;
+}
+a.project-entry:hover,
+a.project-entry:focus-visible {
+  background-color: color-mix(in srgb, var(--hover) 65%, var(--bg));
 }
 .project-entry .project-icon {
-  flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  margin-top: 5px;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
   color: var(--muted);
-  transition: color 180ms ease;
+  transition: color 320ms ease-in-out;
 }
 .project-copy {
   min-width: 0;
 }
 .project-name {
   display: block;
-  font-size: 19px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--heading);
+  transition: color 320ms ease-in-out;
 }
 .project-description {
   display: block;
@@ -347,7 +384,9 @@ h3 {
   color: var(--muted);
 }
 a.project-entry:hover .project-icon,
-a.project-entry:hover .project-name {
+a.project-entry:hover .project-name,
+a.project-entry:focus-visible .project-icon,
+a.project-entry:focus-visible .project-name {
   color: var(--accent);
 }
 .back-link {
@@ -512,8 +551,41 @@ a.project-entry:hover .project-name {
 }
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-group(*) {
-    animation-duration: 360ms;
+    animation-duration: 120ms;
     animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+::view-transition-group(page-content) {
+  animation: none;
+}
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
+  mix-blend-mode: normal;
+}
+
+.navigation-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 2px;
+  z-index: 1000;
+  pointer-events: none;
+  background: var(--accent);
+  opacity: 0;
+  transform: scaleX(0.08);
+  transform-origin: left;
+}
+html[data-navigation-loading] .navigation-progress {
+  opacity: 0.6;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html[data-navigation-loading] .navigation-progress {
+    animation: navigation-progress 8s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
+  }
+}
+@keyframes navigation-progress {
+  to {
+    transform: scaleX(0.9);
   }
 }
 

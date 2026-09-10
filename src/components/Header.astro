@@ -21,6 +21,7 @@ const path = Astro.url.pathname.replace(/^\/(?:en|zh)(?=\/)/, '');
   <a
     href={localPath('/', lang)}
     class="wordmark"
+    data-astro-prefetch="load"
     aria-label={`${site.name} — ${t.home}`}
   >
     {site.name}
@@ -31,7 +32,7 @@ const path = Astro.url.pathname.replace(/^\/(?:en|zh)(?=\/)/, '');
       class="nav-link"
       href={localPath('/posts/', lang)}
       aria-current={path.startsWith('/posts/') ? 'page' : undefined}
-      data-astro-prefetch
+      data-astro-prefetch="load"
     >
       Blog
     </a>
@@ -39,7 +40,7 @@ const path = Astro.url.pathname.replace(/^\/(?:en|zh)(?=\/)/, '');
       class="nav-link"
       href={localPath('/projects/', lang)}
       aria-current={path.startsWith('/projects') ? 'page' : undefined}
-      data-astro-prefetch
+      data-astro-prefetch="load"
     >
       Projects
     </a>

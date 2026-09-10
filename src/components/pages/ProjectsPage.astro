@@ -1,24 +1,44 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectItem from '../ProjectItem.astro';
-import { projects } from '../../data/projects';
+import { projectCategories } from '../../data/projects';
 import { messages, type Locale } from '../../utils/i18n';
 interface Props {
   lang: Locale;
 }
 const { lang } = Astro.props;
 const t = messages[lang];
+const categories = projectCategories.filter(
+  (category) => category.projects.length,
+);
 ---
 
-<BaseLayout lang={lang} title={t.projects} description={t.projectsDescription}>
+<BaseLayout
+  lang={lang}
+  title={t.projects}
+  description={t.projectsDescription}
+  wide
+>
   <h1>{t.projects}</h1>
   <p class="page-description">{t.projectsIntro}</p>
-  {projects.length ? (
-    <ul class="project-list">
-      {projects.map((project) => (
-        <ProjectItem project={project} lang={lang} />
+  {categories.length ? (
+    <div class="project-categories">
+      {categories.map((category) => (
+        <section
+          class="project-category"
+          aria-labelledby={`category-${category.id}`}
+        >
+          <h2 id={`category-${category.id}`}>
+            {lang === 'en' ? (category.nameEn ?? category.name) : category.name}
+          </h2>
+          <ul class="project-list">
+            {category.projects.map((project) => (
+              <ProjectItem project={project} lang={lang} />
+            ))}
+          </ul>
+        </section>
       ))}
-    </ul>
+    </div>
   ) : (
     <div class="empty-state">
       <span class="i-lucide-folder-open empty-icon" aria-hidden="true"></span>
