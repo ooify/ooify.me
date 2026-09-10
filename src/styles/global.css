@@ -1,3 +1,38 @@
+@property --bg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #fff;
+}
+@property --text {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #454545;
+}
+@property --heading {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #202020;
+}
+@property --muted {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #767676;
+}
+@property --faint {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #e8e8e8;
+}
+@property --accent {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #42786e;
+}
+@property --code-bg {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f6f8fa;
+}
 :root {
   color-scheme: light;
   --bg: #fff;
@@ -143,14 +178,15 @@ button {
   opacity: 1;
   transform: rotate(0) scale(1);
 }
-:root.theme-changing,
-:root.theme-changing *:not(.theme-light):not(.theme-dark) {
+:root.theme-changing {
   transition:
-    background-color 320ms ease,
-    color 320ms ease,
-    border-color 320ms ease,
-    fill 320ms ease,
-    stroke 320ms ease;
+    --bg 320ms ease,
+    --text 320ms ease,
+    --heading 320ms ease,
+    --muted 320ms ease,
+    --faint 320ms ease,
+    --accent 320ms ease,
+    --code-bg 320ms ease;
 }
 .page-content {
   padding-top: 80px;
