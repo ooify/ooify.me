@@ -1,0 +1,30 @@
+---
+import { render } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
+import { getPublishedPosts, postUrl } from '../../utils/posts';
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => {
+    const translationId =
+      post.data.lang === 'zh' ? 'en/' + post.id : post.id.replace(/^en\//, '');
+    const translation = posts.find(
+      (entry) =>
+        entry.id === translationId && entry.data.lang !== post.data.lang,
+    );
+    return {
+      params: { id: post.id },
+      props: {
+        post,
+        alternate: translation ? postUrl(translation.id) : undefined,
+      },
+    };
+  });
+}
+
+const { post, alternate } = Astro.props;
+const { Content, headings } = await render(post);
+---
+
+<PostLayout post={post} headings={headings} alternate={alternate}>
+  <Content />
+</PostLayout>

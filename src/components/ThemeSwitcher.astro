@@ -1,0 +1,21 @@
+---
+import type { Locale } from '../utils/i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+---
+
+<button
+  id="theme-switcher"
+  class="icon-button"
+  type="button"
+  aria-label={lang === 'zh' ? '切换深浅色主题' : 'Toggle light and dark theme'}
+>
+  <span class="theme-light i-lucide-moon" aria-hidden="true"></span>
+  <span class="theme-dark i-lucide-sun" aria-hidden="true"></span>
+</button>
+<span id="theme-announcement" class="sr-only" aria-live="polite"></span>
+<script>
+  import '../scripts/theme';
+</script>

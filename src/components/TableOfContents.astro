@@ -1,0 +1,28 @@
+---
+import { messages, type Locale } from '../utils/i18n';
+import type { MarkdownHeading } from 'astro';
+interface Props {
+  headings: MarkdownHeading[];
+  lang?: Locale;
+}
+const t = messages[Astro.props.lang ?? 'zh'];
+const headings = Astro.props.headings.filter(
+  (heading) => heading.depth === 2 || heading.depth === 3,
+);
+---
+
+{headings.length > 0 && (
+  <aside class="toc" aria-label={t.tocLabel}>
+    <div>{t.toc}</div>
+    <ol>
+      {headings.map((heading) => (
+        <li data-depth={heading.depth}>
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        </li>
+      ))}
+    </ol>
+  </aside>
+)}
+<script>
+  import '../scripts/toc';
+</script>

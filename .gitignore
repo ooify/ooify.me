@@ -1,0 +1,46 @@
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# Local caches and deployment state
+.pnpm-store/
+.vercel/
+.cache/
+coverage/
+*.log
+
+# Secrets (keep only a safe example if one is added)
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Private writing and local planning
+/drafts/
+/personal_website_agent_spec.md
+/AGENTS.md
+/CLAUDE.md
+/.agents/
+/.codex/
+/.vscode/

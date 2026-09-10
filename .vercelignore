@@ -1,0 +1,16 @@
+drafts/
+.git/
+.pnpm-store/
+.astro/
+node_modules/
+dist/
+.env*
+*.pem
+*.key
+*.log
+personal_website_agent_spec.md
+AGENTS.md
+CLAUDE.md
+.vscode/
+.agents/
+.codex/

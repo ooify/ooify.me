@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { postUrl, formatDate, postTitleTransition } from '../utils/posts';
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+}
+const { posts } = Astro.props;
+const years = [
+  ...new Set(posts.map((post) => post.data.date.getUTCFullYear())),
+];
+---
+
+{years.map((year) => (
+  <section class="post-year">
+    <h2>{year}</h2>
+    <ul class="post-list">
+      {posts
+        .filter((post) => post.data.date.getUTCFullYear() === year)
+        .map((post) => (
+          <li>
+            <a class="post-title" href={postUrl(post.id)} data-astro-prefetch>
+              <span transition:name={postTitleTransition(post.id)}>
+                {post.data.title}
+              </span>
+            </a>
+            <div class="post-meta">
+              <time datetime={post.data.date.toISOString()}>
+                {formatDate(post.data.date, post.data.lang, false)}
+              </time>
+            </div>
+          </li>
+        ))}
+    </ul>
+  </section>
+))}

@@ -1,0 +1,135 @@
+---
+import { ClientRouter, fade } from 'astro:transitions';
+import { messages, localPath, switchPath } from '../utils/i18n';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import '../styles/global.css';
+interface Props {
+  title?: string;
+  alternate?: string;
+  description?: string;
+  lang?: 'zh' | 'en';
+  article?: { date: Date; updated?: Date };
+  noindex?: boolean;
+}
+const {
+  title,
+  description: providedDescription,
+  alternate,
+  lang = 'en',
+  article,
+  noindex = false,
+} = Astro.props;
+const t = messages[lang];
+const description = providedDescription ?? t.description;
+const staticPage = ['/', '/posts/', '/projects/'].includes(
+  Astro.url.pathname.replace(/^\/(?:en|zh)(?=\/)/, ''),
+);
+const alternateUrl =
+  alternate ?? (staticPage ? switchPath(Astro.url.pathname, lang) : undefined);
+const pageTitle = title ? `${title} · ${site.name}` : site.name;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL('/og.png', site.url).href;
+const jsonLd = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: title,
+      description,
+      url: canonical,
+      image: ogImage,
+      datePublished: article.date.toISOString(),
+      dateModified: (article.updated ?? article.date).toISOString(),
+      author: { '@type': 'Person', name: site.name, url: site.url },
+    }
+  : Astro.url.pathname === localPath('/', lang)
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: site.name,
+        url: site.url,
+        ...(site.github ? { sameAs: [site.github] } : {}),
+      }
+    : undefined;
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'} transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <ClientRouter fallback="swap" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (() => {
+        let preference =
+          document.documentElement.dataset.themePreference ?? 'light';
+        try {
+          const saved = localStorage.getItem('theme');
+          if (saved === 'light' || saved === 'dark') preference = saved;
+        } catch {
+          /* 无偏好或旧 system 设置时默认使用浅色。 */
+        }
+        const root = document.documentElement;
+        root.dataset.themePreference = preference;
+        root.classList.toggle('dark', preference === 'dark');
+      })();
+    </script>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternateUrl && (
+      <>
+        <link
+          rel="alternate"
+          hreflang={lang === 'zh' ? 'zh-CN' : 'en'}
+          href={canonical}
+        />
+        <link
+          rel="alternate"
+          hreflang={lang === 'zh' ? 'en' : 'zh-CN'}
+          href={new URL(alternateUrl, site.url).href}
+        />
+      </>
+    )}
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="JonSan — Blog & Projects" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.name} · Blog`}
+      href="/rss.xml"
+    />
+    {jsonLd && (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
+      ></script>
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {t.skip}
+    </a>
+    <Header lang={lang} alternate={alternate} />
+    <main
+      id="main"
+      class="page-shell page-content"
+      transition:name="page-content"
+      transition:animate={fade({ duration: '180ms' })}
+    >
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

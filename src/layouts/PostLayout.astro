@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import { messages, localPath } from '../utils/i18n';
+import { formatDate, postTitleTransition } from '../utils/posts';
+import '../styles/markdown.css';
+interface Props {
+  post: CollectionEntry<'posts'>;
+  headings: MarkdownHeading[];
+  alternate?: string;
+}
+const { post, headings, alternate } = Astro.props;
+const lang = post.data.lang;
+const t = messages[lang];
+const readingTime = Math.max(1, Math.ceil((post.body ?? '').length / 450));
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  lang={post.data.lang}
+  alternate={alternate}
+  article={{ date: post.data.date, updated: post.data.updated }}
+>
+  <a href={localPath('/posts/', lang)} class="back-link">
+    ← {t.blog}
+  </a>
+  <article>
+    <header class="article-heading">
+      <h1>
+        <span
+          class="article-title-text"
+          transition:name={postTitleTransition(post.id)}
+        >
+          {post.data.title}
+        </span>
+      </h1>
+      <div class="article-meta">
+        <time datetime={post.data.date.toISOString()}>
+          {formatDate(post.data.date, post.data.lang)}
+        </time>
+        <span>
+          {lang === 'en' ? `${readingTime} min read` : `约 ${readingTime} 分钟`}
+        </span>
+        {post.data.updated && (
+          <span>
+            {t.updated}{' '}
+            <time datetime={post.data.updated.toISOString()}>
+              {formatDate(post.data.updated, post.data.lang)}
+            </time>
+          </span>
+        )}
+      </div>
+      <p class="article-summary">{post.data.description}</p>
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+    <TableOfContents headings={headings} lang={lang} />
+    <div class="article-bottom">
+      <a href={localPath('/posts/', lang)}>← {t.allPosts}</a>
+    </div>
+  </article>
+</BaseLayout>

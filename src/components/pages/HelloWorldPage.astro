@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { localPath, type Locale } from '../../utils/i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const en = lang === 'en';
+---
+
+<BaseLayout
+  lang={lang}
+  title="Hello World"
+  description={
+    en
+      ? 'A first small project, built with Astro.'
+      : '用 Astro 写下第一句问候。'
+  }
+  alternate={localPath('/projects/hello-world/', en ? 'zh' : 'en')}
+>
+  <a class="back-link" href={localPath('/projects/', lang)}>
+    ← Projects
+  </a>
+  <h1>
+    Hello World<span class="hello-dot">.</span>
+  </h1>
+  <p class="page-description">
+    {en ? 'Every idea starts somewhere.' : '每一个想法，都有一个开始。'}
+  </p>
+  <div class="project-intro">
+    <p>
+      {en
+        ? 'This is the first little project on my website: a simple greeting, a clean page, and room for what comes next.'
+        : '这是我个人网站的第一个小项目：一句简单的问候，一个干净的页面，以及留给未来的空间。'}
+    </p>
+    <p>
+      {en
+        ? 'Built with Astro and TypeScript, with Chinese and English pages and light and dark themes.'
+        : '使用 Astro 和 TypeScript 构建，支持中英文页面与明暗主题。'}
+    </p>
+    <a
+      href={en ? '/posts/en/hello-world/' : '/posts/hello-world/'}
+      class="text-link"
+      data-astro-prefetch
+    >
+      {en ? 'Read the Hello World post →' : '阅读 Hello World 文章 →'}
+    </a>
+  </div>
+</BaseLayout>
+<style>
+  .project-intro {
+    font-size: 16px;
+    line-height: 1.95;
+  }
+  .project-intro p {
+    margin: 0 0 24px;
+  }
+  .hello-dot {
+    color: var(--accent);
+  }
+</style>

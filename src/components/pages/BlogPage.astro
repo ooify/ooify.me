@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../PostList.astro';
+import { messages, type Locale } from '../../utils/i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = messages[lang];
+import { getPublishedPosts } from '../../utils/posts';
+const posts = (await getPublishedPosts()).filter(
+  (post) => post.data.lang === lang,
+);
+---
+
+<BaseLayout lang={lang} title={t.blog} description={t.blogDescription}>
+  <h1>{t.blog}</h1>
+  <p class="page-description">{t.blogIntro}</p>
+  {posts.length ? (
+    <PostList posts={posts} />
+  ) : (
+    <div class="empty-state">
+      <span class="i-lucide-notebook-pen empty-icon" aria-hidden="true"></span>
+      <h2>{t.noPosts}</h2>
+      <p>{t.noPostsHint}</p>
+    </div>
+  )}
+</BaseLayout>

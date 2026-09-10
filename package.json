@@ -1,0 +1,41 @@
+{
+  "name": "ooify.me",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "typecheck": "astro check",
+    "lint": "eslint .",
+    "format": "prettier --write src astro.config.mjs uno.config.ts eslint.config.js"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^7.3.2"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@eslint/js": "^9.39.5",
+    "@iconify-json/lucide": "^1.2.130",
+    "@iconify-json/simple-icons": "^1.2.95",
+    "@shikijs/transformers": "^4.4.3",
+    "@unocss/astro": "^66.10.1",
+    "eslint": "^9.39.5",
+    "eslint-plugin-astro": "^1.7.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^1.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.70.0",
+    "unocss": "^66.10.1"
+  },
+  "packageManager": "pnpm@10.32.1"
+}

@@ -1,0 +1,112 @@
+.prose {
+  font-size: 16px;
+  line-height: 1.95;
+  overflow-wrap: break-word;
+}
+.prose h2 {
+  font-size: 24px;
+  line-height: 1.5;
+  margin: 48px 0 18px;
+  letter-spacing: -0.4px;
+}
+.prose h3 {
+  font-size: 19px;
+  line-height: 1.5;
+  margin: 32px 0 14px;
+}
+.prose p {
+  margin: 20px 0;
+}
+.prose a {
+  text-decoration: underline;
+  text-decoration-color: var(--muted);
+  text-underline-offset: 4px;
+}
+.prose a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+.prose ul,
+.prose ol {
+  padding-left: 24px;
+}
+.prose li {
+  margin: 6px 0;
+}
+.prose blockquote {
+  border-left: 2px solid var(--faint);
+  margin: 28px 0;
+  padding-left: 22px;
+  color: var(--muted);
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--faint);
+  margin: 40px 0;
+}
+.prose img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 28px auto;
+}
+.prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.prose td,
+.prose th {
+  padding: 10px 16px;
+  border: 1px solid var(--faint);
+  text-align: left;
+}
+.prose :not(pre) > code {
+  font-size: 0.86em;
+  background: var(--hover);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+.prose pre {
+  font-size: 13px;
+  line-height: 1.8;
+  padding: 22px 24px;
+  overflow-x: auto;
+  border-radius: 5px;
+  background: var(--code-bg) !important;
+}
+.prose code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+}
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+.dark .astro-code,
+.dark .astro-code span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+.astro-code .line.highlighted {
+  display: inline-block;
+  min-width: 100%;
+  background: var(--faint);
+}
+.astro-code .line.diff.add {
+  display: inline-block;
+  min-width: 100%;
+  background: #239b3820;
+}
+.astro-code .line.diff.remove {
+  display: inline-block;
+  min-width: 100%;
+  background: #e3494920;
+}
+.astro-code .highlighted-word {
+  background: var(--faint);
+  border: 1px solid var(--muted);
+  border-radius: 3px;
+}

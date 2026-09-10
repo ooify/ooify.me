@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../data/site';
+import { messages, localPath, type Locale } from '../../utils/i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const t = messages[lang];
+---
+
+<BaseLayout lang={lang}>
+  <article class="home-intro">
+    <h1>{site.name}</h1>
+    <p>
+      {lang === 'zh' ? `你好，我是 ${site.name}。` : `Hey, I’m ${site.name}.`}
+    </p>
+    {lang === 'zh' ? (
+      <>
+        <p>
+          这里是我的个人空间，用来记录想法、分享文章，
+          <br class="hidden sm:block" />
+          也放一些自己做的小东西。
+        </p>
+        <p>
+          写下来的内容放在{' '}
+          <a href={localPath('/posts/', lang)} data-astro-prefetch>
+            Blog
+          </a>
+          ，<br class="hidden sm:block" />
+          做过的东西整理在{' '}
+          <a href={localPath('/projects/', lang)} data-astro-prefetch>
+            Projects
+          </a>
+          。
+        </p>
+      </>
+    ) : (
+      <>
+        <p>
+          This is my little corner of the internet — a place for thoughts,
+          <br class="hidden sm:block" /> writing, and things I make.
+        </p>
+        <p>
+          You can read my notes on the{' '}
+          <a href={localPath('/posts/', lang)} data-astro-prefetch>
+            Blog
+          </a>
+          <br class="hidden sm:block" /> or take a look at my{' '}
+          <a href={localPath('/projects/', lang)} data-astro-prefetch>
+            Projects
+          </a>
+          .
+        </p>
+      </>
+    )}
+    <p class="home-closing">{t.closing}</p>
+    {site.github && (
+      <div class="social-links">
+        <span>{t.findMe}</span>
+        <a
+          href={site.github}
+          target="_blank"
+          rel="me noopener noreferrer"
+          class="inline-flex items-center gap-2"
+          aria-label={t.github}
+        >
+          <span class="i-simple-icons-github" aria-hidden="true"></span>GitHub
+          <span
+            class="i-lucide-arrow-up-right text-sm"
+            aria-hidden="true"
+          ></span>
+        </a>
+      </div>
+    )}
+  </article>
+</BaseLayout>

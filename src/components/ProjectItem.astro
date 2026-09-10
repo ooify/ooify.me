@@ -1,0 +1,36 @@
+---
+import type { Project } from '../data/projects';
+import { localPath, type Locale } from '../utils/i18n';
+interface Props {
+  project: Project;
+  lang: Locale;
+}
+const { project, lang } = Astro.props;
+const destination = project.url ?? project.github;
+const internal = destination?.startsWith('/');
+const href =
+  destination && internal ? localPath(destination, lang) : destination;
+const Tag = href ? 'a' : 'div';
+---
+
+<li>
+  <Tag
+    class="project-entry"
+    href={href}
+    target={href && !internal ? '_blank' : undefined}
+    rel={href && !internal ? 'noopener noreferrer' : undefined}
+    data-astro-prefetch={internal || undefined}
+  >
+    <span class:list={['project-icon', project.icon]} aria-hidden="true"></span>
+    <span class="project-copy">
+      <span class="project-name">
+        {lang === 'en' ? (project.nameEn ?? project.name) : project.name}
+      </span>
+      <span class="project-description">
+        {lang === 'en'
+          ? (project.descriptionEn ?? project.description)
+          : project.description}
+      </span>
+    </span>
+  </Tag>
+</li>

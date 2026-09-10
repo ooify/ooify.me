@@ -1,0 +1,64 @@
+---
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import ThemeSwitcher from './ThemeSwitcher.astro';
+import { site } from '../data/site';
+import { messages, localPath, type Locale } from '../utils/i18n';
+interface Props {
+  lang: Locale;
+  alternate?: string;
+}
+const { lang, alternate } = Astro.props;
+const t = messages[lang];
+const path = Astro.url.pathname.replace(/^\/(?:en|zh)(?=\/)/, '');
+---
+
+<header
+  class="site-header"
+  transition:persist="site-header"
+  transition:name="site-header"
+  transition:animate="none"
+>
+  <a
+    href={localPath('/', lang)}
+    class="wordmark"
+    aria-label={`${site.name} — ${t.home}`}
+  >
+    {site.name}
+    <span aria-hidden="true">.</span>
+  </a>
+  <nav class="header-nav" aria-label={t.nav}>
+    <a
+      class="nav-link"
+      href={localPath('/posts/', lang)}
+      aria-current={path.startsWith('/posts/') ? 'page' : undefined}
+      data-astro-prefetch
+    >
+      Blog
+    </a>
+    <a
+      class="nav-link"
+      href={localPath('/projects/', lang)}
+      aria-current={path.startsWith('/projects') ? 'page' : undefined}
+      data-astro-prefetch
+    >
+      Projects
+    </a>
+    <LanguageSwitcher lang={lang} alternate={alternate} />
+    <a
+      href="/rss.xml"
+      class="icon-button"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={t.rss}
+      title={t.rss}
+      data-astro-reload
+    >
+      <span class="i-lucide-rss" aria-hidden="true"></span>
+    </a>
+    <ThemeSwitcher lang={lang} />
+  </nav>
+</header>
+
+<script>
+  import '../scripts/navigation';
+</script>
